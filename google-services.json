@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "851443240011",
+    "firebase_url": "https://projectivittest.firebaseio.com",
+    "project_id": "projectivittest",
+    "storage_bucket": "projectivittest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851443240011:android:633e326da399debb",
+        "android_client_info": {
+          "package_name": "com.ionicframework.projectivity2671345"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851443240011-9rhec7c1dti5b9rr4kulo8clj1g7pmjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ionicframework.projectivity2671345",
+            "certificate_hash": "8204090da52793b53b9f2d20f2179f92492994b3"
+          }
+        },
+        {
+          "client_id": "851443240011-fkbg6qsqbq4e3v4okknrm3atjmvv5mvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-eBUQf1-ap6WHO34QH1dqviQGtVW9rac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851443240011-fkbg6qsqbq4e3v4okknrm3atjmvv5mvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

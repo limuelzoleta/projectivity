@@ -1,0 +1,100 @@
+page-login {
+    .main-login-container{
+    background: url('../assets/images/login-page-background.png') no-repeat center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    padding: 10rem 16px 16px 16px !important;
+
+
+
+    .scroll-content{
+      overflow-y: hidden;
+      padding: 10rem 16px 16px 16px !important;
+    }
+
+  }
+  .login-title{
+    color: #2196f3;
+    font-weight: 700;
+    // margin-top: 13rem !important;
+    margin-bottom: 4rem !important;
+    text-align: center;
+    font-size: 3em;
+    font-family: 'Raleway';
+
+    span{
+      font-weight: 300;
+    }
+
+
+
+
+  }
+  .login-form-item{
+      background: none !important;
+      padding-right: 16px !important;
+
+      .form-icons{
+        font-size: 1em;
+      }
+    }
+
+  .login-form-item:focus .login-title{
+    margin-top: 5rem !important;
+    
+  }
+
+
+  .half-width-button{
+    width: 49%;
+    margin: 1rem 0;
+    float: right;
+  }
+  .half-width-button:first-child{
+    float:left;
+  }
+  .login-button{
+    padding: 1.5em 1.1em;
+    line-height: 0.67;
+
+    .google-plus-icon{
+      padding-right: 0.6em;
+      font-size: 1.8em;
+    }
+  }
+  .forgot-pass{
+    text-align: center;
+    padding: 1rem;
+    a{
+      font-size: 1em;
+      font-weight: 500;
+      color:#2196f3;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+
+  .input-error{
+    border-bottom-color: #f53d3d !important;
+    box-shadow: inset 0 -1px 0 0 #f53d3d !important;
+  }
+  .error{
+    color: #f53d3d !important;
+  }
+  .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner, .no-error{
+    
+    border-bottom-color: #dedede;
+    box-shadow: none;
+  }
+
+  .error-container{
+    height: 2.4em;
+    .error-message{
+      font-size: 0.9em;
+      color: #f53d3d;
+      text-align: center;
+    }
+  }
+
+}
