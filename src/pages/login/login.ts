@@ -42,21 +42,21 @@ export class Login {
     let passwordErrorMsg ="";
     let hasError = false;
 
-    let emailElement = this.elementRef.nativeElement.querySelector('#emailErrorMsg');
-    let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
-    let passwordElement = this.elementRef.nativeElement.querySelector('#passwordErrorMsg');
-    let passwordInputElement = this.elementRef.nativeElement.querySelector('.pass-item .item-inner');
-    let errorElement = this.elementRef.nativeElement.querySelector('.error-message');
+    // let emailElement = this.elementRef.nativeElement.querySelector('#emailErrorMsg');
+    // let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
+    // let passwordElement = this.elementRef.nativeElement.querySelector('#passwordErrorMsg');
+    // let passwordInputElement = this.elementRef.nativeElement.querySelector('.pass-item .item-inner');
+    // let errorElement = this.elementRef.nativeElement.querySelector('.error-message');
 
 
 
-    this.renderer.setProperty(emailElement, 'innerHTML',  '');
-    this.renderer.removeClass(emailInputElement, 'input-error');
+    // this.renderer.setProperty(emailElement, 'innerHTML',  '');
+    // this.renderer.removeClass(emailInputElement, 'input-error');
 
-    this.renderer.setProperty(passwordElement, 'innerHTML',  '');
-    this.renderer.removeClass(passwordInputElement, 'input-error');
+    // this.renderer.setProperty(passwordElement, 'innerHTML',  '');
+    // this.renderer.removeClass(passwordInputElement, 'input-error');
 
-    this.renderer.setProperty(errorElement, 'innerHTML',  '');
+    // this.renderer.setProperty(errorElement, 'innerHTML',  '');
 
     if(this.email === undefined){
       emailErrorMsg = "(Email is required)";
