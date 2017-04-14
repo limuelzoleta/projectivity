@@ -83,8 +83,7 @@ export class Login {
       }
       
       if(passwordErrorMsg !== ""){
-        
-        // emailElement.innerHTML("has error");
+      emailElement.innerHTML("has error");
         this.renderer.setProperty(passwordElement, 'innerHTML',  passwordErrorMsg);
         this.renderer.addClass(passwordInputElement, 'input-error');
         // this.renderer.removeClass(emailInputElement, 'item-inner');
@@ -100,7 +99,7 @@ export class Login {
         provider: AuthProviders.Password,
         method: AuthMethods.Password
       }).then((response)=> {
-        // console.log("Login success" + JSON.stringify(response));
+        console.log("Login success" + JSON.stringify(response));
         let currentuser = {
           email: response.auth.email,
           picture: response.auth.photoURL
@@ -110,7 +109,7 @@ export class Login {
         this.navCtrl.setRoot(HomePage);
       }). catch((error)=>{
         let errorCode = JSON.parse(JSON.stringify(error , ['code'])).code;
-        // console.log(errorCode);
+        console.log(errorCode);
         if(errorCode === "auth/user-not-found"){
            this.email="";
            this.password="";
@@ -121,8 +120,9 @@ export class Login {
         }
 
       })
-    }
+    
   }
+}
 
 
 
