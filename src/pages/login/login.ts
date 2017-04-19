@@ -1,173 +1,125 @@
-import { Component, Renderer2, ElementRef } from '@angular/core';
+import { Component} from '@angular/core';
 
 import { NavController, NavParams, Platform } from 'ionic-angular';
+import { Validators, FormBuilder} from "@angular/forms";
 import { AuthProviders, AuthMethods, AngularFire } from "angularfire2";
-import { HomePage } from "../home/home";
 
+import { HomePage } from "../home/home";
+import { UserRegistration } from "../user-registration/user-registration";
+
+
+import { PUserAccess } from "../../providers/p-user-access";
 import {GooglePlus} from '@ionic-native/google-plus';
 import firebase from 'firebase';
 
-/**
- * Generated class for the Login page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers: [GooglePlus]
-
+  providers: [PUserAccess, GooglePlus],
 })
-
 
 
 
 
 export class Login {
 
-  email: any;
-  password: any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public angfire: AngularFire, public platform: Platform, private googlePlus: GooglePlus, private elementRef: ElementRef, private renderer: Renderer2) {
-    if(this.isLoggedIn()){
+  email = null;
+  password = null;
+  errorMessage="";
+  loginForm: any;
+  // private loginForm: FormGroup;
+  private userLogin;
+  constructor(private navCtrl: NavController, private navParams: NavParams, private platform: Platform, private formBuilder: FormBuilder, private userAccess: PUserAccess, private googlePlus: GooglePlus, private angfire: AngularFire) {
+    if(this.userAccess.isLoggedIn()){
       this.navCtrl.setRoot(HomePage);
     }
+
+    this.loginForm = this.formBuilder.group({
+      email: this.formBuilder.control('',  Validators.compose([
+        Validators.required,
+        Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+      ])),
+      password: this.formBuilder.control('', Validators.required)
+    });
 
   }
 
 
-  login(){
-    let emailErrorMsg ="";
-    let passwordErrorMsg ="";
-    let hasError = false;
-
-    // let emailElement = this.elementRef.nativeElement.querySelector('#emailErrorMsg');
-    // let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
-    // let passwordElement = this.elementRef.nativeElement.querySelector('#passwordErrorMsg');
-    // let passwordInputElement = this.elementRef.nativeElement.querySelector('.pass-item .item-inner');
-    // let errorElement = this.elementRef.nativeElement.querySelector('.error-message');
-
-
-
-    // this.renderer.setProperty(emailElement, 'innerHTML',  '');
-    // this.renderer.removeClass(emailInputElement, 'input-error');
-
-    // this.renderer.setProperty(passwordElement, 'innerHTML',  '');
-    // this.renderer.removeClass(passwordInputElement, 'input-error');
-
-    // this.renderer.setProperty(errorElement, 'innerHTML',  '');
-
-    if(this.email === undefined){
-      emailErrorMsg = "(Email is required)";
-      hasError = true;
-    } else if(this.email.trim() === null || this.email.trim() === '' ) {
-      emailErrorMsg = "(Email is required)";  
-      hasError = true;
-    } else if (!this.isValidEmail(this.email)) {
-      emailErrorMsg = "(Email is invalid)";    
-      hasError = true;
-    } else if(this.password === undefined || this.password === null || this.password === ''){
-      passwordErrorMsg ="(Invalid password)";
-      hasError = true;
-    }
-
-
-    if(hasError){
-      if(emailErrorMsg !== ""){
-        
-        // emailElement.innerHTML("has error");
-        this.renderer.setProperty(emailElement, 'innerHTML',  emailErrorMsg);
-        this.renderer.addClass(emailInputElement, 'input-error');
-        // this.renderer.removeClass(emailInputElement, 'item-inner');
-      }
-      
-      if(passwordErrorMsg !== ""){
-        
-        // emailElement.innerHTML("has error");
-        this.renderer.setProperty(passwordElement, 'innerHTML',  passwordErrorMsg);
-        this.renderer.addClass(passwordInputElement, 'input-error');
-        // this.renderer.removeClass(emailInputElement, 'item-inner');
-      }
-
-      return false;
-    } else {
-
-      this.angfire.auth.login({
-        email: this.email,
-        password: this.password
-      }, {
-        provider: AuthProviders.Password,
-        method: AuthMethods.Password
-      }).then((response)=> {
-        // console.log("Login success" + JSON.stringify(response));
-        let currentuser = {
-          email: response.auth.email,
-          picture: response.auth.photoURL
-
-        };
-        window.localStorage.setItem('currentuser', JSON.stringify(currentuser));
+  login(loginFormInfo){
+    let email = loginFormInfo.email;
+    let password = loginFormInfo.password
+    this.userAccess.userLogin(email, password).then((result) => {
+      let loginResult = result.loginResult;
+      console.log(loginResult);
+      if(loginResult === "success"){
         this.navCtrl.setRoot(HomePage);
-      }). catch((error)=>{
-        let errorCode = JSON.parse(JSON.stringify(error , ['code'])).code;
-        // console.log(errorCode);
+      } else {
+        let errorCode = result.errorMessage;
+        console.log(errorCode);
         if(errorCode === "auth/user-not-found"){
            this.email="";
            this.password="";
-           this.renderer.setProperty(errorElement, 'innerHTML',  'Invalid Email and Password');
+           this.errorMessage = "Invalid Email and Password";
         } else if(errorCode === "auth/wrong-password"){
           this.password="";
-          this.renderer.setProperty(errorElement, 'innerHTML',  'Invalid Password');
+          this.errorMessage = "Invalid Password";
         }
+      }
 
-      })
-    }
+    });
+    return false;
   }
 
 
 
   googleLogin(){
+
+    // If platform is native mobile
     if(this.platform.is('cordova')){
 
       this.googlePlus.login({"webClientId": "851443240011-fkbg6qsqbq4e3v4okknrm3atjmvv5mvi.apps.googleusercontent.com"})
-      .then((res) => {
+        .then((res) => {
+          const googleCredentials = firebase.auth.GoogleAuthProvider.credential(res.idToken);
+          firebase.auth().signInWithCredential(googleCredentials).then((response)=>{
+            let currentuser = firebase.auth().currentUser;
 
-        const googleCredentials = firebase.auth.GoogleAuthProvider.credential(res.idToken);
-        console.log(googleCredentials);
-        console.log("stopper");
+            // console.log(JSON.stringify(currentuser));
+            let ifUserExists = this.angfire.database.object(`users/${currentuser.uid}`);
+            ifUserExists.subscribe((data) =>{
+              if(data.$value === null){
+                this.userAccess.addUserRecord(currentuser);
+              }
+            })
 
-        firebase.auth().signInWithCredential(googleCredentials).then((response)=>{
-          let currentuser = firebase.auth().currentUser;
-
-          window.localStorage.setItem('currentuser', JSON.stringify(currentuser.displayName));
-          this.navCtrl.setRoot(HomePage);
-        }, (err)=>{
-          alert("login failed");
-        });
-
-      
+            window.localStorage.setItem('currentuser', JSON.stringify(currentuser.displayName));
+            this.navCtrl.setRoot(HomePage);
+          }, (err)=>{
+            alert("login failed");
+          });
     })
       .catch(err => console.error(err));
     }
 
-
+    // If platform is web
     this.angfire.auth.login({
       provider: AuthProviders.Google,
       method: AuthMethods.Popup
     }).then((response)=> {
-      // console.log("Login success with Google" + JSON.stringify(response));
-      let currentuser = {
-        email: response.auth.displayName,
-        picture: response.auth.photoURL
+      console.log(response);
 
+
+      let currentuser = {
+        uid: response.auth.uid,
+        email: response.auth.email,
+        displayName: response.auth.displayName,
+        photoURL: response.auth.photoURL
       };
-      console.log(response.auth.uid);
       let ifUserExists = this.angfire.database.object(`users/${response.auth.uid}`);
       ifUserExists.subscribe((data) =>{
-        if(data.$value !== null){
-          console.log("user has records");
-        } else {
-          console.log("newbie");
+        if(data.$value === null){
+          // console.log("newbie");
+          this.userAccess.addUserRecord(currentuser);
         }
       })
 
@@ -178,61 +130,14 @@ export class Login {
     })
   }
 
-
-  isLoggedIn(){
-    if(window.localStorage.getItem('currentuser')){
-      return true;
-    }
+  register(){
+    this.navCtrl.push(UserRegistration, {}, {animate: true, animation:'fade', direction: 'forward'});
   }
 
-  isValidEmail(email){
-      let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      return regex.test(email);
-
+  clearErrorMessage(){
+    this.errorMessage="";
   }
 
-  checkEmail(){
-    if(this.email === undefined){
-      return false;
-    }
-
-    let emailElement = this.elementRef.nativeElement.querySelector('#emailErrorMsg');
-    let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
-
-    this.renderer.setProperty(emailElement, 'innerHTML',  '');
-    this.renderer.removeClass(emailInputElement, 'input-error');
-
-
-    if(this.email.trim() === '' || this.email === undefined){
-
-      this.renderer.setProperty(emailElement, 'innerHTML',  "Email is required");
-      this.renderer.addClass(emailInputElement, 'input-error');
-    } else if(!this.isValidEmail(this.email)){
-
-
-      this.renderer.setProperty(emailElement, 'innerHTML',  "Invalid Email");
-      this.renderer.addClass(emailInputElement, 'input-error');
-    }
-  }
-
-  clearInput(type){
-    if(type === "email"){
-      
-      let emailElement = this.elementRef.nativeElement.querySelector('#emailErrorMsg');
-      let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
-
-      this.renderer.setProperty(emailElement, 'innerHTML',  '');
-      this.renderer.removeClass(emailInputElement, 'input-error');
-    }
-  
-    if(type === "password"){
-      let passwordElement = this.elementRef.nativeElement.querySelector('#passwordErrorMsg');
-      let passwordInputElement = this.elementRef.nativeElement.querySelector('.pass-item .item-inner');
-
-      this.renderer.setProperty(passwordElement, 'innerHTML',  '');
-      this.renderer.removeClass(passwordInputElement, 'input-error');
-    }
-  }
 
 
 

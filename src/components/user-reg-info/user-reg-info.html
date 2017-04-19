@@ -1,0 +1,68 @@
+
+<ion-header>
+
+  <ion-navbar color="primary" hideBackButton>
+    <ion-buttons left>
+      <button ion-button (click)="backButtonClick()">
+          <ion-icon class="back-icon" name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="page-title">Information</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating>First Name</ion-label>
+      <ion-input type="text" name="firstName" ></ion-input>
+    </ion-item>
+    
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating> Last Name </ion-label>
+      <ion-input type="text" name="lastName" ></ion-input>
+    </ion-item>
+
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating>Gender</ion-label>
+      <ion-select name="gender">
+        <ion-option value="male" >Male</ion-option>
+        <ion-option value="female" >Female</ion-option>
+        <ion-option value="other" >Other</ion-option>
+      </ion-select>     
+    </ion-item>
+
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating>Date of Birth</ion-label>
+      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" name="birthday" ></ion-datetime>
+    </ion-item>
+
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating> Address </ion-label>
+      <ion-input type="text" name="address" ></ion-input>
+    </ion-item>
+
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating>Country</ion-label>
+      <ion-select name="country" (ionChange)="stateOptions(country)" [(ngModel)]="country" disabled="{{countrySelect}}">
+        <ion-option value="" default>Select country</ion-option>
+        <ion-option *ngFor="let country of country_items">{{country}}</ion-option>
+      </ion-select>     
+    </ion-item>
+
+    <ion-item class="login-form-item pass-item">
+      <ion-label floating>State</ion-label>
+      <ion-select name="state"  [(ngModel)]="state"  disabled="{{stateSelect}}">
+        <ion-option *ngFor="let state of state_items" value={{state}}>{{state}}</ion-option>
+      </ion-select>     
+    </ion-item>
+
+    <ion-item hidden></ion-item>
+
+  </ion-list>
+  
+  <button ion-button class="next-button" (click)="register()" >Register</button>
+
+</ion-content>

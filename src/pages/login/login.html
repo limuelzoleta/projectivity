@@ -16,35 +16,43 @@
 <ion-content padding class="main-login-container" overflow-scroll="false" >
   <div class="login-content-wrapper">
     <h1 class="login-title">Project<span>ivity</span></h1>
-    <form>
+    <form  [(formGroup)]="loginForm" (ngSubmit)="loginForm.valid ? login(loginForm.value) : false">
       <ion-list >
         <ion-item class="login-form-item email-item"  >
 
           <ion-label icon-left floating>         
             <ion-icon class="form-icons" ios="ios-person" md="md-person" name="person"></ion-icon>
-            Email <span class="error" id="emailErrorMsg"></span> 
+            Email <span class="error" id="emailErrorMsg" 
+                        [hidden]="loginForm.controls.email.focus"
+                        *ngIf="loginForm.controls.email.touched && loginForm.controls.email.errors?.required">
+                        : Email is required</span> 
+                  <span class="error" id="emailErrorMsg" 
+                        *ngIf="loginForm.controls.email.errors?.pattern && !loginForm.controls.email.errors?.required">
+                        : Invalid Email</span> 
           </ion-label>
           
-          <ion-input (focusout)="checkEmail()" (focus)="clearInput('email')" type="text" name="email" [(ngModel)]="email"></ion-input>
+          <ion-input type="text" name="email" (focus)="clearErrorMessage()" formControlName="email" [value]=email ></ion-input>
   
         </ion-item>
         <ion-item class="login-form-item pass-item" >
           <ion-label icon-left floating>
             <ion-icon class="form-icons" name="lock" ios="ios-lock" md="md-lock"></ion-icon>
-            Password <span class="error" id="passwordErrorMsg"></span> 
+            Password <span class="error" id="emailErrorMsg"
+                        *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">
+                        : Enter your password</span> 
           </ion-label>
-          <ion-input type="password" (focus)="clearInput('password')" name="password" [(ngModel)]="password"  ></ion-input>
+          <ion-input type="password" name="password" (focus)="clearErrorMessage()" formControlName="password" [value]=password ></ion-input>
         </ion-item>
 
         <div class="error-container" padding-left padding-right padding-top >
-          <div class="error-message"></div>
+          <div class="error-message"> {{errorMessage}} </div>
         </div>
         
           
           <div class="button-wrapper" padding-left padding-right>
           
-            <button class="half-width-button login-button" ion-button (click)="login()" >Login</button>
-            <button class="half-width-button login-button" ion-button >Register</button>
+            <button class="half-width-button login-button" type="submit" ion-button  >Login</button>
+            <button class="half-width-button login-button" (click)="register()" ion-button >Register</button>
 
             <button class="login-button" ion-button icon-left (click)="googleLogin()" block color="danger">
               <ion-icon class="google-plus-icon" name="logo-googleplus" ios="logo-googleplus" md="logo-googleplus" ></ion-icon>
