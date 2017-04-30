@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2, ElementRef } from '@angular/core';
 import { NavController, NavParams, } from 'ionic-angular';
 import { AngularFire } from "angularfire2";
 import { Validators, FormBuilder, FormGroup, FormControl} from "@angular/forms";
@@ -22,8 +22,9 @@ export class UserRegistration {
   errorMessage: string;
   signUp: FormGroup;
   emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  emailHasRecord = false;
-  constructor(public navCtrl: NavController,  public navParams: NavParams,public angularFire: AngularFire, private formBuilder : FormBuilder, private userAccess: PUserAccess) {
+  emailHasRecord = true;
+  emailValidating: boolean = false;
+  constructor(public navCtrl: NavController,  public navParams: NavParams,public angularFire: AngularFire, private formBuilder : FormBuilder, private userAccess: PUserAccess, public elementRef : ElementRef, public renderer : Renderer2) {
     this.signUp = this.formBuilder.group({
       email: this.formBuilder.control('',  Validators.compose([
         Validators.required,
@@ -48,13 +49,23 @@ export class UserRegistration {
   checkEmail(email){
     
     if(this.emailValidator.test(email)){
+      this.emailValidating = true;
+      let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
       let emailCheck = this.userAccess.hasRecord(email);
       emailCheck.then(data => {
         if(data.userProv.hasRecord){
+          this.errorMessage = ": Email already exist";
           this.emailHasRecord = true;
+          // console.log(emailInputElement);
+          this.renderer.addClass(emailInputElement, 'input-error');
+          this.emailValidating = false;
+        } else {
+          this.emailValidating = false;
+          this.emailHasRecord = false;
         }
-      });  
+      });
     }
+    
   }
 
  
@@ -62,13 +73,15 @@ export class UserRegistration {
 
   next(signUpValue){
 
-
-    this.navCtrl.push(UserRegInfo, {}, {animate:true, animation:'left-to-right', direction: 'forward'});
-
+    console.log(signUpValue);
+    this.navCtrl.push(UserRegInfo, signUpValue, {animate:true, animation:'left-to-right', direction: 'forward'});
+    
     // this.navCtrl.push()
   }
   clearErrorMessage(){
     this.errorMessage="";
+    let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
+    this.renderer.removeClass(emailInputElement, 'input-error');
   }
 
 }

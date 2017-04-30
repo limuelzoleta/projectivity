@@ -6,12 +6,6 @@ import 'rxjs/add/operator/map';
 import firebase from 'firebase';
 
 
-/*
-  Generated class for the PUserAccess provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 let result;
 @Injectable()
 export class PUserAccess {
@@ -50,12 +44,13 @@ export class PUserAccess {
 
     }));
   }
-
+  // Add record to db
   addUserRecord(userInfo){
   
     let userInfoSet = {
       email: userInfo.email,
       displayName: userInfo.displayName, 
+      isEmailVerified: false,
       dateCreated: firebase.database.ServerValue.TIMESTAMP,
       lastUpdated: firebase.database.ServerValue.TIMESTAMP
     }
@@ -72,8 +67,8 @@ export class PUserAccess {
     if(userInfo.gender !== undefined){
       userInfoSet['gender'] = userInfo.gender;
     }
-    if(userInfo.dateOfBirth !== undefined){
-      userInfoSet['dateOfBirth'] = userInfo.dateOfBirth;
+    if(userInfo.birthday !== undefined){
+      userInfoSet['birthday'] = userInfo.birthday;
     }
     if(userInfo.country !== undefined){
       userInfoSet['country'] = userInfo.country;
@@ -88,8 +83,6 @@ export class PUserAccess {
 
     let users = this.angfire.database.object('users/' + userInfo.uid);
     users.set(userInfoSet);
-    // users.(users, {email: "3test@registration.com", name: "tester"});
-    console.log("created");
   }
 
 
@@ -106,23 +99,18 @@ export class PUserAccess {
         this.platform.ready().then(() => {
           // In-App apple solution
           console.log ("In App Logout...");
-
           firebase.auth().signOut().then(success => {
             console.log ("Logout from Firebase...");
             this.googlePlus.disconnect();
             window.localStorage.removeItem('currentuser');
             console.log ("Logged out from Firebase...");
-            // this.navCtrl.setRoot(Login);
           });
         });
       } else {
         //In-browser solution
         window.localStorage.removeItem('currentuser');
         firebase.auth().signOut();
-        console.log ("Logged out from Firebase...");
-        // this.navCtrl.setRoot(Login);
       }
-
   }
 
   hasRecord(email) {
@@ -139,6 +127,29 @@ export class PUserAccess {
           }};
         }
     });
+  }
+
+
+  //Create User OAuth using Email and Password
+  createUser(email, password){
+     return firebase.auth().createUserWithEmailAndPassword(email, password).then(response => {
+      return response;
+    }).catch(error => {
+      return error.message;
+    });
+  }
+
+
+  //In future move to general function
+  //Capitalize first letter of each word
+  toUpperCaseFirst(input){
+    let capitalizedInput = "";
+    let separator = input.split(/[ ]+/);
+    separator.forEach(element => {
+      let eachWord = element.substring(0,1).toUpperCase()+element.substring(1);
+      capitalizedInput = capitalizedInput + eachWord + " ";
+    });
+    return capitalizedInput.trim();
   }
 
 }

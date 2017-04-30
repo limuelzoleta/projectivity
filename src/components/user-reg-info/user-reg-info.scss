@@ -32,6 +32,21 @@ user-reg-info {
         padding: 2rem 3.5rem;
         float: right;
       }
+      ion-label{
+        overflow: visible !important;
+      }
+      .error{
+        font-size: 0.85em;
+        color: #f53d3d !important;
+      }
+      .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner, .no-error{
+        border-bottom-color: #dedede;
+        box-shadow: none;
+      }
+      .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner{
+        border-bottom-color: #dedede;
+        box-shadow: inset 0 -1px 0 0 #dedede;
+      }
     }
 
 

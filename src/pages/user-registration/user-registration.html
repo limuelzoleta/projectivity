@@ -14,22 +14,26 @@
 
 
 <ion-content padding>
-  <form [(formGroup)]="signUp" #form="ngForm" (ngSubmit)="signUp.valid ? next(signUp.value) : false">
+  <form [(formGroup)]="signUp" #form="ngForm" (ngSubmit)="signUp.valid && !emailHasRecord ? next(signUp.value) : false">
     <ion-list>
-      <ion-item class="login-form-item pass-item">
+      <ion-item class="login-form-item email-item">
         <ion-label icon-left floating>         
           <ion-icon class="form-icons" ios="ios-person" md="md-person" name="person"></ion-icon>
             Email <span class="error" id="emailErrorMsg" 
                         [hidden]="signUp.controls.email.focus"
                         *ngIf="signUp.controls.email.touched && signUp.controls.email.errors?.required">
-                        : Email is required</span> 
+                        : Email is required </span> 
                   <span class="error" id="emailErrorMsg" 
                         *ngIf="signUp.controls.email.errors?.pattern && !signUp.controls.email.errors?.required">
                         : Invalid Email</span>
+                  <span class="error" id="emailErrorMsg" 
+                        *ngIf="!signUp.controls.email.errors?.pattern && !signUp.controls.email.errors?.required">
+                        {{errorMessage}}</span>
+                  <ion-spinner icon="android" color="primary" class="email-validating" *ngIf="emailValidating"></ion-spinner>
         </ion-label>
         <ion-input 
           type="text" name="email" 
-          (focus)="clearErrorMessage()" 
+          (focus)="clearErrorMessage()"
           (focusout)="checkEmail(signUp.value.email)" 
           formControlName="email" 
           [value]=email 
@@ -39,22 +43,32 @@
         <ion-item class="login-form-item pass-item">
           <ion-label icon-left floating>         
             <ion-icon class="form-icons" name="lock" ios="ios-lock" md="md-lock"></ion-icon>
-            Password 
+            Password <span class="error" id="emailErrorMsg"
+                        *ngIf="signUp.controls.password.touched && signUp.controls.password.errors?.required">
+                        : Enter your password</span> 
+                     <span class="error" id="emailErrorMsg"
+                        *ngIf="signUp.controls.password.errors?.minlength && !signUp.controls.password.errors?.required">
+                        : Minimum of 6 characters</span> 
           </ion-label>
-          <ion-input type="password" name="password" (focus)="clearErrorMessage()" formControlName="password" [value]=password [(ngModel)]="password"></ion-input>
+          <ion-input type="password" name="password" formControlName="password" [value]=password [(ngModel)]="password"></ion-input>
         </ion-item>
 
         <ion-item class="login-form-item pass-item">
           <ion-label icon-left floating>         
             <ion-icon class="form-icons" name="lock" ios="ios-lock" md="md-lock"></ion-icon>
-            Confirm Password 
+            Confirm Password <span class="error" id="emailErrorMsg"
+                                *ngIf="signUp.controls.confirmPassword.touched && signUp.controls.confirmPassword.errors?.required">
+                                : Enter your password</span> 
+                            <span class="error" id="emailErrorMsg"
+                                *ngIf="signUp.controls.confirmPassword.errors?.passwordMatch && !signUp.controls.confirmPassword.errors?.required">
+                                : Password doesn't match</span> 
           </ion-label>
           <ion-input type="password" name="confirmPassword" formControlName="confirmPassword" [value]=confirmPassword  [(ngModel)]="confirmPassword" ></ion-input>
         </ion-item>
       
       <ion-item hidden></ion-item>
     </ion-list>
-    <button ion-button class="next-button" (click)="next()" >Next</button>
+    <button ion-button class="next-button" type="submit" [disabled]="!signUp.valid || emailHasRecord" >Next</button>
   </form>
   <!--<user-reg-info></user-reg-info>-->
 

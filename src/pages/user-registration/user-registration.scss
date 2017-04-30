@@ -34,12 +34,21 @@ page-user-registration {
       border-bottom-color: #f53d3d !important;
       box-shadow: inset 0 -1px 0 0 #f53d3d !important;
     }
+    ion-label{
+      overflow: visible !important;
+    }
     .error{
+      font-size: 0.85em;
       color: #f53d3d !important;
     }
     .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner, .no-error{
       border-bottom-color: #dedede;
       box-shadow: none;
+    }
+    .email-validating{
+      width: 1em;
+      height: 1em;
+      top: 2px;
     }
 
 

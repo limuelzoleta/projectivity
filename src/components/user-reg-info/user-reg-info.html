@@ -14,55 +14,92 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating>First Name</ion-label>
-      <ion-input type="text" name="firstName" ></ion-input>
-    </ion-item>
+  <form [(formGroup)]="register" #form="ngForm" (submit)="register.valid ? registerSubmit(register.value) : false" >
+    <ion-list>
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating>First Name
+          <span class="error"   
+              *ngIf="register.controls.firstName.touched && register.controls.firstName.errors?.required">
+              : First Name is required </span> 
+          <span class="error"   
+              *ngIf="register.controls.firstName.touched && register.controls.firstName.errors?.pattern">
+              : First Name contains invalid character </span> 
+        </ion-label>
+        <ion-input type="text" name="firstName" [(ngModel)]="firstName" formControlName="firstName" ></ion-input>
+      </ion-item>
+      
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating> Last Name 
+          <span class="error"   
+              *ngIf="register.controls.lastName.touched && register.controls.lastName.errors?.required">
+              : Last Name is required </span> 
+          <span class="error"   
+              *ngIf="register.controls.lastName.touched && register.controls.lastName.errors?.pattern">
+              : Last Name contains invalid character </span> 
+        </ion-label>
+        <ion-input type="text" name="lastName" [(ngModel)]="lastName" formControlName="lastName" ></ion-input>
+      </ion-item>
+
+      <ion-item class="login-form-item pass-item gender-item">
+        <ion-label floating>Gender
+          <span class="error"   
+              *ngIf="register.controls.gender.touched && register.controls.gender.errors?.required">
+              : Select your gender </span> 
+        </ion-label>
+        <ion-select name="gender" [(ngModel)]="gender" formControlName="gender" ionChange="bdayCheck(gender)" >
+          <ion-option value="male" >Male</ion-option>
+          <ion-option value="female" >Female</ion-option>
+          <ion-option value="other" >Other</ion-option>
+        </ion-select>     
+      </ion-item>
+
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating>Date of Birth 
+          <span class="error"   
+              *ngIf="register.controls.birthday.touched && register.controls.birthday.errors?.required">
+              : Please set your birthday </span>
+          <span class="error"   
+              *ngIf="register.controls.birthday.touched && register.controls.birthday.errors?.checkAge">
+              : Must be at least 18 y/o </span> 
+        </ion-label>
+        <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" name="birthday" formControlName="birthday" [(ngModel)]="birthday" ></ion-datetime>
+      </ion-item>
+
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating> Address
+          <span class="error"   
+              *ngIf="register.controls.address.touched && register.controls.address.errors?.required">
+              : Address is required</span> 
+        </ion-label>
+        <ion-input type="text" name="address" formControlName="address" [(ngModel)]="address" ></ion-input>
+      </ion-item>
+
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating>Country
+          <span class="error"   
+              *ngIf="register.controls.selectedCountry.touched && register.controls.selectedCountry.errors?.required">
+              : Select your country</span> 
+        </ion-label>
+        <ion-select name="selectedCountry" formControlName="selectedCountry" (ionChange)="stateOptions(selectedCountry)" [(ngModel)]="selectedCountry" disabled="{{countrySelect}}">
+          <ion-option *ngFor="let country of country_items" value="{{country}}">{{country}}</ion-option>
+        </ion-select>     
+      </ion-item>
+
+      <ion-item class="login-form-item pass-item">
+        <ion-label floating>State
+           <!--<span class="error"   
+              *ngIf="register.controls.selectedState.touched && register.controls.selectedState.errors?.required">
+              : Select your state</span> -->
+        </ion-label>
+        <ion-select name="selectedState" formControlName="selectedState"  [(ngModel)]="selectedState"  disabled="{{stateSelect}}">
+          <ion-option *ngFor="let state of state_items" value={{state}}>{{state}}</ion-option>
+        </ion-select>     
+      </ion-item>
+
+      <ion-item hidden></ion-item>
+
+    </ion-list>
     
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating> Last Name </ion-label>
-      <ion-input type="text" name="lastName" ></ion-input>
-    </ion-item>
-
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating>Gender</ion-label>
-      <ion-select name="gender">
-        <ion-option value="male" >Male</ion-option>
-        <ion-option value="female" >Female</ion-option>
-        <ion-option value="other" >Other</ion-option>
-      </ion-select>     
-    </ion-item>
-
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating>Date of Birth</ion-label>
-      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" name="birthday" ></ion-datetime>
-    </ion-item>
-
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating> Address </ion-label>
-      <ion-input type="text" name="address" ></ion-input>
-    </ion-item>
-
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating>Country</ion-label>
-      <ion-select name="country" (ionChange)="stateOptions(country)" [(ngModel)]="country" disabled="{{countrySelect}}">
-        <ion-option value="" default>Select country</ion-option>
-        <ion-option *ngFor="let country of country_items">{{country}}</ion-option>
-      </ion-select>     
-    </ion-item>
-
-    <ion-item class="login-form-item pass-item">
-      <ion-label floating>State</ion-label>
-      <ion-select name="state"  [(ngModel)]="state"  disabled="{{stateSelect}}">
-        <ion-option *ngFor="let state of state_items" value={{state}}>{{state}}</ion-option>
-      </ion-select>     
-    </ion-item>
-
-    <ion-item hidden></ion-item>
-
-  </ion-list>
-  
-  <button ion-button class="next-button" (click)="register()" >Register</button>
-
+    <button ion-button class="next-button" type="submit" [disabled]="!register.valid || selectedState == null || isDisabled" >Register</button>
+  </form>
 </ion-content>
