@@ -20,12 +20,12 @@ import { UserRegInfo } from "../components/user-reg-info/user-reg-info";
 
 // Initialize Firebase
 const config = {
-  apiKey: "AIzaSyBd9udR4zbs_BlI8MjiGubnCskxp6QCJ3Y",
-  authDomain: "projectivittest.firebaseapp.com",
-  databaseURL: "https://projectivittest.firebaseio.com",
-  projectId: "projectivittest",
-  storageBucket: "projectivittest.appspot.com",
-  messagingSenderId: "851443240011"
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: ""
 };
 
 

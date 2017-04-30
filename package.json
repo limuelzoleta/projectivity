@@ -1,7 +1,10 @@
 {
   "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": {
+    "name":"John Limuel Zoleta",
+    "email": "jlrzoleta@gmail.com"
+    },
+  "homepage": "",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -45,5 +48,6 @@
     "cordova-plugin-device"
   ],
   "cordovaPlatforms": [],
-  "description": "projectivity2: An Ionic project"
+  "description": "projectivity: a group project management app",
+  "license": "Apache-2.0"
 }

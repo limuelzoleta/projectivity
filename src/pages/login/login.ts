@@ -78,7 +78,7 @@ export class Login {
     // If platform is native mobile
     if(this.platform.is('cordova')){
 
-      this.googlePlus.login({"webClientId": "851443240011-fkbg6qsqbq4e3v4okknrm3atjmvv5mvi.apps.googleusercontent.com"})
+      this.googlePlus.login({"webClientId": "WEB CLIENT ID"})
         .then((res) => {
           const googleCredentials = firebase.auth.GoogleAuthProvider.credential(res.idToken);
           firebase.auth().signInWithCredential(googleCredentials).then((response)=>{
