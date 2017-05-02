@@ -19,19 +19,6 @@ import { UserRegistration } from "../pages/user-registration/user-registration";
 import { UserRegInfo } from "../components/user-reg-info/user-reg-info";
 
 
-<<<<<<< HEAD
-// Initialize Firebase
-const config = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: ""
-};
-
-=======
->>>>>>> draft2
 
 @NgModule({
   declarations: [

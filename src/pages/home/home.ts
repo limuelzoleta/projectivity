@@ -4,7 +4,6 @@ import { Login } from "../login/login";
 
 
 import { PUserAccess } from "../../providers/p-user-access";
-import firebase from 'firebase';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -27,14 +26,9 @@ export class HomePage {
       this.navCtrl.setRoot(Login);
     }
   }
-<<<<<<< HEAD
-  logout(){
 
-=======
 
   logout(){
->>>>>>> draft2
     this.userAccess.userLogout();
-
   }
 }
