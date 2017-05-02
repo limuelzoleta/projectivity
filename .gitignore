@@ -28,6 +28,9 @@ plugins/android.json
 plugins/ios.json
 www/
 $RECYCLE.BIN/
+providers/con-config.ts
+/google-services.json
+stdout-stream/
 
 .DS_Store
 Thumbs.db
