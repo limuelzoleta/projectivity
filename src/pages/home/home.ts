@@ -12,6 +12,14 @@ import firebase from 'firebase';
 })
 export class HomePage {
 
+  /**
+   * Creates an instance of HomePage.
+   * @param {NavController} navCtrl 
+   * @param {Platform} platform 
+   * @param {PUserAccess} userAccess 
+   * 
+   * @memberof HomePage
+   */
   constructor(public navCtrl: NavController, public platform: Platform, private userAccess: PUserAccess) {
 
     if(!this.userAccess.isLoggedIn()){
@@ -19,8 +27,13 @@ export class HomePage {
       this.navCtrl.setRoot(Login);
     }
   }
+<<<<<<< HEAD
   logout(){
 
+=======
+
+  logout(){
+>>>>>>> draft2
     this.userAccess.userLogout();
 
   }

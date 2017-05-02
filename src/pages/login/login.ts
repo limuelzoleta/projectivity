@@ -1,3 +1,4 @@
+
 import { Component} from '@angular/core';
 
 import { NavController, NavParams, Platform } from 'ionic-angular';
@@ -9,6 +10,7 @@ import { UserRegistration } from "../user-registration/user-registration";
 
 
 import { PUserAccess } from "../../providers/p-user-access";
+import { ProjectivityConst } from './../../providers/con-config';
 import {GooglePlus} from '@ionic-native/google-plus';
 import firebase from 'firebase';
 
@@ -78,7 +80,8 @@ export class Login {
     // If platform is native mobile
     if(this.platform.is('cordova')){
 
-      this.googlePlus.login({"webClientId": "WEB CLIENT ID"})
+
+      this.googlePlus.login({"webClientId": ProjectivityConst.WEB_CLIENT_ID})
         .then((res) => {
           const googleCredentials = firebase.auth.GoogleAuthProvider.credential(res.idToken);
           firebase.auth().signInWithCredential(googleCredentials).then((response)=>{

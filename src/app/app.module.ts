@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {GooglePlus} from '@ionic-native/google-plus';
 
 import { PUserAccess } from "../providers/p-user-access";
+import { PfirebaseCredentials } from "../providers/con-config";
 
 import { AngularFireModule } from "angularfire2";
 
@@ -18,6 +19,7 @@ import { UserRegistration } from "../pages/user-registration/user-registration";
 import { UserRegInfo } from "../components/user-reg-info/user-reg-info";
 
 
+<<<<<<< HEAD
 // Initialize Firebase
 const config = {
   apiKey: "",
@@ -28,6 +30,8 @@ const config = {
   messagingSenderId: ""
 };
 
+=======
+>>>>>>> draft2
 
 @NgModule({
   declarations: [
@@ -52,7 +56,7 @@ const config = {
       //     // http://ionicframework.com/docs/v2/api/config/Config/)
       //   }}
         ),
-    AngularFireModule.initializeApp(config),
+    AngularFireModule.initializeApp(PfirebaseCredentials),
     
   ],
   bootstrap: [IonicApp],
