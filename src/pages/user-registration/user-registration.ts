@@ -1,8 +1,8 @@
 import { Component, Renderer2, ElementRef } from '@angular/core';
 import { NavController, NavParams, } from 'ionic-angular';
 import { AngularFire } from "angularfire2";
-import { Validators, FormBuilder, FormGroup, FormControl} from "@angular/forms";
-import firebase from 'firebase';
+import { Validators, FormBuilder, FormGroup} from "@angular/forms";
+//import firebase from 'firebase';
 
 import { UserRegInfo } from "../../components/user-reg-info/user-reg-info";
 import { PUserAccess } from "../../providers/p-user-access";
@@ -56,7 +56,6 @@ export class UserRegistration {
         if(data.userProv.hasRecord){
           this.errorMessage = ": Email already exist";
           this.emailHasRecord = true;
-          // console.log(emailInputElement);
           this.renderer.addClass(emailInputElement, 'input-error');
           this.emailValidating = false;
         } else {

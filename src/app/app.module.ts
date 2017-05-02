@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {GooglePlus} from '@ionic-native/google-plus';
 
 import { PUserAccess } from "../providers/p-user-access";
+import { PfirebaseCredentials } from "../providers/con-config";
 
 import { AngularFireModule } from "angularfire2";
 
@@ -17,16 +18,6 @@ import { UserRegistration } from "../pages/user-registration/user-registration";
 
 import { UserRegInfo } from "../components/user-reg-info/user-reg-info";
 
-
-// Initialize Firebase
-const config = {
-  apiKey: "AIzaSyBd9udR4zbs_BlI8MjiGubnCskxp6QCJ3Y",
-  authDomain: "projectivittest.firebaseapp.com",
-  databaseURL: "https://projectivittest.firebaseio.com",
-  projectId: "projectivittest",
-  storageBucket: "projectivittest.appspot.com",
-  messagingSenderId: "851443240011"
-};
 
 
 @NgModule({
@@ -52,7 +43,7 @@ const config = {
       //     // http://ionicframework.com/docs/v2/api/config/Config/)
       //   }}
         ),
-    AngularFireModule.initializeApp(config),
+    AngularFireModule.initializeApp(PfirebaseCredentials),
     
   ],
   bootstrap: [IonicApp],
