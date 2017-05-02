@@ -28,11 +28,8 @@ plugins/android.json
 plugins/ios.json
 www/
 $RECYCLE.BIN/
-<<<<<<< HEAD
-=======
 providers/con-config.ts
 /google-services.json
->>>>>>> draft2
 stdout-stream/
 
 .DS_Store
