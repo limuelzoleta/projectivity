@@ -2,7 +2,6 @@ import { Component, Renderer2, ElementRef } from '@angular/core';
 import { NavController, NavParams, } from 'ionic-angular';
 import { AngularFire } from "angularfire2";
 import { Validators, FormBuilder, FormGroup} from "@angular/forms";
-//import firebase from 'firebase';
 
 import { UserRegInfo } from "../../components/user-reg-info/user-reg-info";
 import { PUserAccess } from "../../providers/p-user-access";
@@ -24,7 +23,29 @@ export class UserRegistration {
   emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   emailHasRecord = true;
   emailValidating: boolean = false;
+
+
+  /**
+   * Creates an instance of UserRegistration.
+   * @param {NavController} navCtrl 
+   * @param {NavParams} navParams 
+   * @param {AngularFire} angularFire 
+   * @param {FormBuilder} formBuilder 
+   * @param {PUserAccess} userAccess 
+   * @param {ElementRef} elementRef 
+   * @param {Renderer2} renderer 
+   * 
+   * @memberof UserRegistration
+   */
+
   constructor(public navCtrl: NavController,  public navParams: NavParams,public angularFire: AngularFire, private formBuilder : FormBuilder, private userAccess: PUserAccess, public elementRef : ElementRef, public renderer : Renderer2) {
+
+      /**
+       * Creates an instance of UserRegistration.
+       * Form Validators validates email and password
+       * 
+       * @memberof UserRegistration
+       */
     this.signUp = this.formBuilder.group({
       email: this.formBuilder.control('',  Validators.compose([
         Validators.required,
@@ -42,12 +63,22 @@ export class UserRegistration {
 
   
 
+  /**
+   * Function that runs when back button is clicked
+   *
+   */
   backButtonClick(){
     this.navCtrl.pop({animate:true, animation:'right-to-left', direction:'back'});
   }
 
+  /**
+   *Function that checks the database for ducplicate email 
+   * 
+   * @param {any} email 
+   * 
+   * 
+   */
   checkEmail(email){
-    
     if(this.emailValidator.test(email)){
       this.emailValidating = true;
       let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
@@ -67,16 +98,22 @@ export class UserRegistration {
     
   }
 
- 
-
-
+  /**
+   * Moves to the next screen for adding information
+   * 
+   * @param {any} signUpValue object that contains email and password information
+   * 
+   * @memberof UserRegistration
+   */
   next(signUpValue){
-
-    console.log(signUpValue);
     this.navCtrl.push(UserRegInfo, signUpValue, {animate:true, animation:'left-to-right', direction: 'forward'});
-    
-    // this.navCtrl.push()
   }
+
+  /**
+   * function that clears error messages
+   * 
+   * @memberof UserRegistration
+   */
   clearErrorMessage(){
     this.errorMessage="";
     let emailInputElement = this.elementRef.nativeElement.querySelector('.email-item .item-inner');
@@ -85,6 +122,12 @@ export class UserRegistration {
 
 }
 
+/**
+ * 
+ * custom validator function for matching passwords
+ * @param {any} confirmPassword 
+ * @returns 
+ */
 function passwordMatch(confirmPassword){
 
   if(confirmPassword.value !== ""){

@@ -25,13 +25,15 @@ export class PUserAccess {
         method: AuthMethods.Password
       }).then((response)=> {
         let currentuser = {
+          uid: response.auth.uid,
           email: response.auth.email,
           picture: response.auth.photoURL
         };
         window.localStorage.setItem('currentuser', JSON.stringify(currentuser));
         
         return result = {
-          loginResult: "success"
+          loginResult: "success",
+          currentUserInfo: currentuser
         };
 
       }). catch((error)=>{

@@ -24,11 +24,14 @@ export class HomePage {
     if(!this.userAccess.isLoggedIn()){
       console.log("You are not logged in");
       this.navCtrl.setRoot(Login);
+    } else {
+      console.log("You are not logged in");
+      this.navCtrl.setRoot(Login);
     }
   }
 
 
-  logout(){
-    this.userAccess.userLogout();
-  }
+  // logout(){
+  //   this.userAccess.userLogout();
+  // }
 }

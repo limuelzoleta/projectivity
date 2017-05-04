@@ -1,3 +1,4 @@
+import { UserRegInfo } from './../../components/user-reg-info/user-reg-info';
 
 import { Component} from '@angular/core';
 
@@ -91,12 +92,19 @@ export class Login {
             let ifUserExists = this.angfire.database.object(`users/${currentuser.uid}`);
             ifUserExists.subscribe((data) =>{
               if(data.$value === null){
-                this.userAccess.addUserRecord(currentuser);
+                let registerInfo = {
+                  uid : currentuser.uid,
+                  email : currentuser.email,
+                  from: "google_signup"
+                }
+                this.navCtrl.push(UserRegInfo, registerInfo, {animate:true, animation:'left-to-right', direction: 'forward'});
+              } else {
+                window.localStorage.setItem('currentuser', JSON.stringify(currentuser.displayName));
+                this.navCtrl.setRoot(HomePage);
               }
             })
 
-            window.localStorage.setItem('currentuser', JSON.stringify(currentuser.displayName));
-            this.navCtrl.setRoot(HomePage);
+
           }, (err)=>{
             alert("login failed");
           });
@@ -121,13 +129,19 @@ export class Login {
       let ifUserExists = this.angfire.database.object(`users/${response.auth.uid}`);
       ifUserExists.subscribe((data) =>{
         if(data.$value === null){
-          // console.log("newbie");
-          this.userAccess.addUserRecord(currentuser);
+           let registerInfo = {
+                  uid : currentuser.uid,
+                  email : currentuser.email,
+                  from: "google_signup"
+                }
+            this.navCtrl.push(UserRegInfo, registerInfo, {animate:true, animation:'left-to-right', direction: 'forward'});
+        } else {
+          window.localStorage.setItem('currentuser', JSON.stringify(currentuser));
+          this.navCtrl.setRoot(HomePage);
         }
       })
 
-      window.localStorage.setItem('currentuser', JSON.stringify(currentuser));
-      this.navCtrl.setRoot(HomePage);
+     
     }). catch((error)=>{
       console.log(error);
     })
